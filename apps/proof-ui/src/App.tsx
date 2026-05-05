@@ -7,50 +7,82 @@ const marketplaceUrl = import.meta.env.VITE_MARKETPLACE_URL || "";
 const mcpUrl = import.meta.env.VITE_MCP_URL || "https://referral-ready-mcp.dpratik3005.workers.dev/mcp";
 const demoVideoUrl = import.meta.env.VITE_DEMO_VIDEO_URL || "";
 
-function LaunchCard(props: { label: string; status: string; detail: string; href?: string }) {
+type LaunchTone = "positive" | "pending" | "neutral";
+
+function LaunchCard(props: { label: string; status: string; detail: string; href?: string; tone?: LaunchTone }) {
   return (
     <article className="launch-card">
       <div className="launch-head">
         <span>{props.label}</span>
-        <strong>{props.status}</strong>
+        <strong className={`status-badge ${props.tone ?? "neutral"}`}>{props.status}</strong>
       </div>
       <p>{props.detail}</p>
       {props.href ? (
-        <a href={props.href} target="_blank" rel="noreferrer">
-          Open link
+        <a className="inline-link" href={props.href} target="_blank" rel="noreferrer">
+          Open surface
         </a>
-      ) : null}
+      ) : (
+        <span className="inline-note">Final link pending</span>
+      )}
     </article>
   );
 }
 
-function MetricCard(props: { label: string; value: string; tone?: "warm" | "cool" }) {
+function SummaryRow(props: { label: string; value: string }) {
   return (
-    <div className={`metric-card ${props.tone ?? "cool"}`}>
-      <span>{props.label}</span>
-      <strong>{props.value}</strong>
+    <div className="summary-row">
+      <dt>{props.label}</dt>
+      <dd>{props.value}</dd>
     </div>
   );
 }
 
+function formatOwners(caseStudy: CaseStudy) {
+  const owners = Array.from(new Set(caseStudy.tasks.tasks.slice(0, 3).map((task) => task.owner)));
+  return owners.join(", ");
+}
+
 function ReadinessCase({ caseStudy }: { caseStudy: CaseStudy }) {
+  const presentEvidence = caseStudy.readiness.presentEvidence.slice(0, 3);
+  const missingEvidence = caseStudy.readiness.missingEvidence.slice(0, 3);
+  const packetSections = caseStudy.packet.sections.slice(0, 2).map((section) => section.title).join(", ");
+  const prepChecklist = caseStudy.prep.checklist.slice(0, 2).join("; ");
+  const owners = formatOwners(caseStudy);
+  const taskCount = caseStudy.tasks.tasks.length;
+  const facts = [
+    { label: "Readiness score", value: `${caseStudy.readiness.readinessScore}/100` },
+    { label: "Evidence found", value: `${caseStudy.readiness.presentEvidence.length}` },
+    { label: "Blocking gaps", value: `${caseStudy.readiness.missingEvidence.length}` }
+  ];
+
   return (
     <article className="case-card">
       <div className="case-head">
-        <p className="eyebrow">{caseStudy.specialtyName}</p>
-        <h3>{caseStudy.patientName}</h3>
+        <div className="case-title">
+          <p className="eyebrow">{caseStudy.specialtyName}</p>
+          <h3>{caseStudy.patientName}</h3>
+        </div>
         <span className={`status-pill ${caseStudy.readiness.readyForReferral ? "ready" : "needs-work"}`}>
-          {caseStudy.readiness.readyForReferral ? "Referral-ready" : "Needs closure work"}
+          {caseStudy.readiness.readyForReferral ? "Ready for referral" : "Needs closure work"}
         </span>
       </div>
 
       <p className="case-summary">{caseStudy.summary}</p>
 
-      <div className="case-grid">
-        <section>
-          <h4>Present evidence</h4>
-          <ul>
-            {caseStudy.readiness.presentEvidence.map((item) => (
+      <dl className="case-facts" aria-label={`${caseStudy.patientName} case facts`}>
+        {facts.map((fact) => (
+          <div key={fact.label} className="fact-chip">
+            <dt>{fact.label}</dt>
+            <dd>{fact.value}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <div className="case-detail-grid">
+        <section className="detail-card">
+          <h4>Evidence present</h4>
+          <ul className="compact-list">
+            {presentEvidence.map((item) => (
               <li key={item.requirementId}>
                 <strong>{item.label}</strong>
                 <span>{item.citations.map((citation) => citation.label).join("; ")}</span>
@@ -59,45 +91,43 @@ function ReadinessCase({ caseStudy }: { caseStudy: CaseStudy }) {
           </ul>
         </section>
 
-        <section>
-          <h4>Open gaps</h4>
-          <ul>
-            {caseStudy.readiness.missingEvidence.map((item) => (
-              <li key={item.requirementId}>
-                <strong>{item.label}</strong>
-                <span>{item.suggestedAction}</span>
-              </li>
-            ))}
+        <section className="detail-card">
+          <h4>Missing before referral</h4>
+          {missingEvidence.length > 0 ? (
+            <ul className="compact-list">
+              {missingEvidence.map((item) => (
+                <li key={item.requirementId}>
+                  <strong>{item.label}</strong>
+                  <span>{item.suggestedAction}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="empty-note">No blocking gaps detected for this referral path.</p>
+          )}
+        </section>
+
+        <section className="detail-card">
+          <h4>Output package</h4>
+          <ul className="compact-list">
+            <li>
+              <strong>Referral packet</strong>
+              <span>{packetSections}</span>
+            </li>
+            <li>
+              <strong>Patient prep</strong>
+              <span>{prepChecklist}</span>
+            </li>
+            <li>
+              <strong>Tasks and FHIR export</strong>
+              <span>
+                {taskCount} follow-up tasks for {owners}; {caseStudy.exportBundle.artifactCounts.documentReferenceCount} DocumentReference,{" "}
+                {caseStudy.exportBundle.artifactCounts.taskCount} Task resource
+                {caseStudy.exportBundle.artifactCounts.taskCount === 1 ? "" : "s"}, {caseStudy.exportBundle.artifactCounts.provenanceCount} Provenance
+              </span>
+            </li>
           </ul>
         </section>
-      </div>
-
-      <div className="packet-preview">
-        <h4>Packet preview</h4>
-        {caseStudy.packet.sections.slice(0, 2).map((section) => (
-          <div key={section.title} className="packet-section">
-            <strong>{section.title}</strong>
-            <p>{section.body}</p>
-          </div>
-        ))}
-      </div>
-
-      <div className="packet-preview">
-        <h4>FHIR export</h4>
-        <div className="packet-section">
-          <strong>{caseStudy.exportBundle.bundleType.toUpperCase()} Bundle</strong>
-          <p>
-            {caseStudy.exportBundle.artifactCounts.taskCount} Task resource
-            {caseStudy.exportBundle.artifactCounts.taskCount === 1 ? "" : "s"}, {caseStudy.exportBundle.artifactCounts.documentReferenceCount}
-            {" "}DocumentReference, {caseStudy.exportBundle.artifactCounts.provenanceCount} Provenance
-          </p>
-        </div>
-        {caseStudy.exportBundle.validationNotes.slice(0, 1).map((note) => (
-          <div key={note.message} className="packet-section">
-            <strong>{note.level === "warning" ? "Export warning" : "Export note"}</strong>
-            <p>{note.message}</p>
-          </div>
-        ))}
       </div>
     </article>
   );
@@ -106,7 +136,10 @@ function ReadinessCase({ caseStudy }: { caseStudy: CaseStudy }) {
 export default function App() {
   const [cases, setCases] = useState<CaseStudy[]>([]);
   const [loading, setLoading] = useState(true);
-  const heroKicker = marketplaceUrl ? "Published Prompt Opinion MCP" : "Prompt Opinion-ready MCP";
+  const heroKicker = marketplaceUrl ? "Published Prompt Opinion MCP" : "Prompt Opinion-ready clinical MCP";
+  const primaryAction = marketplaceUrl
+    ? { href: marketplaceUrl, label: "Open Marketplace entry" }
+    : { href: repoUrl, label: "View GitHub repo" };
 
   useEffect(() => {
     let mounted = true;
@@ -135,98 +168,106 @@ export default function App() {
           <p className="hero-kicker">{heroKicker}</p>
           <h1>Referral Ready MCP</h1>
           <p className="hero-subtitle">
-            A healthcare MCP superpower that reads patient context, spots missing workup, drafts specialist-ready packets,
-            prepares patient outreach, and exports standards-native FHIR artifacts without pretending that generic chat is
-            clinical workflow.
+            Referral Ready turns Prompt Opinion FHIR context into specialist-ready referrals. It identifies missing workup,
+            packages the handoff, prepares patient follow-up, and emits standards-native FHIR artifacts.
+          </p>
+          <p className="hero-note">
+            Built for a narrow referral workflow where structured output matters more than generic healthcare chat.
           </p>
 
-          <div className="hero-links">
-            <a href={repoUrl} target="_blank" rel="noreferrer">
-              GitHub Repo
+          <div className="hero-actions">
+            <a className="action-link primary" href={primaryAction.href} target="_blank" rel="noreferrer">
+              {primaryAction.label}
             </a>
-            {marketplaceUrl ? (
-              <a href={marketplaceUrl} target="_blank" rel="noreferrer">
-                Prompt Opinion Marketplace
+            {marketplaceUrl ? null : <span className="action-link muted">Marketplace link pending publish</span>}
+            {primaryAction.href === repoUrl ? null : (
+              <a className="action-link" href={repoUrl} target="_blank" rel="noreferrer">
+                GitHub repo
               </a>
-            ) : (
-              <span>Marketplace link pending publish</span>
             )}
             {mcpUrl ? (
-              <a href={mcpUrl} target="_blank" rel="noreferrer">
-                MCP Endpoint
+              <a className="action-link" href={mcpUrl} target="_blank" rel="noreferrer">
+                MCP endpoint
               </a>
             ) : null}
             {demoVideoUrl ? (
-              <a href={demoVideoUrl} target="_blank" rel="noreferrer">
-                Demo Video
+              <a className="action-link" href={demoVideoUrl} target="_blank" rel="noreferrer">
+                Demo video
               </a>
             ) : null}
           </div>
         </div>
 
-        <div className="hero-metrics">
-          <MetricCard label="Contest lane" value="MCP Superpower" tone="warm" />
-          <MetricCard label="Demo data" value="Synthetic FHIR R4" />
-          <MetricCard label="Core outputs" value="Table + Template + Tasks + FHIR Bundle" />
-          <MetricCard label="MVP specialties" value="GI + Cardiology" tone="warm" />
-        </div>
+        <aside className="summary-card" aria-label="Project summary">
+          <p className="eyebrow">At a glance</p>
+          <dl className="summary-list">
+            <SummaryRow label="Contest lane" value="MCP Superpower" />
+            <SummaryRow label="Demo data" value="Synthetic FHIR R4" />
+            <SummaryRow label="Core outputs" value="Readiness table, packet, tasks, FHIR bundle" />
+            <SummaryRow label="Specialty scope" value="Gastroenterology and cardiology" />
+          </dl>
+
+          <div className="hero-brief">
+            <div>
+              <span className="brief-label">Why this workflow</span>
+              <p>Referrals fail when the chart handoff is incomplete, not because another summary was missing.</p>
+            </div>
+            <div>
+              <span className="brief-label">What the MCP returns</span>
+              <p>Evidence-backed readiness scoring, patient prep, follow-up tasks, and standards-native export artifacts.</p>
+            </div>
+          </div>
+        </aside>
       </section>
 
       <section className="section-block">
         <div className="section-head">
-          <p className="eyebrow">Submission Surface</p>
-          <h2>Public artifacts and publish path</h2>
+          <p className="eyebrow">Public Surface</p>
+          <h2>Everything needed to verify the project</h2>
+          <p className="section-intro">
+            The live repo, worker, marketplace path, and demo slot stay visible without taking over the page.
+          </p>
         </div>
 
         <div className="launch-grid">
           <LaunchCard
             label="GitHub Repo"
             status="Live"
-            detail="Public source repo for judges, setup, and verification."
+            detail="Public source repo for setup, review, and verification."
             href={repoUrl}
+            tone="positive"
           />
           <LaunchCard
             label="MCP Worker"
             status={mcpUrl ? "Live" : "Set URL"}
             detail="Public MCP endpoint used by Prompt Opinion and smoke tests."
             href={mcpUrl || undefined}
+            tone={mcpUrl ? "positive" : "pending"}
           />
           <LaunchCard
             label="Marketplace Entry"
             status={marketplaceUrl ? "Published" : "Publish pending"}
             detail="Attach the final Prompt Opinion share link here after Marketplace publish."
             href={marketplaceUrl || undefined}
+            tone={marketplaceUrl ? "positive" : "pending"}
           />
           <LaunchCard
             label="Demo Video"
             status={demoVideoUrl ? "Attached" : "User-owned"}
-            detail="Video remains outside the repo flow and should be added after the in-platform run is stable."
+            detail="Add the final public video after the in-platform path is stable."
             href={demoVideoUrl || undefined}
+            tone={demoVideoUrl ? "neutral" : "pending"}
           />
-        </div>
-      </section>
-
-      <section className="story-strip">
-        <div>
-          <span className="story-label">Why this angle</span>
-          <p>
-            Most hackathon healthcare agents stop at summarization. Referral Ready focuses on the real failure point:
-            incomplete handoffs that waste specialist time, bounce patients, and hide missing workup until too late.
-          </p>
-        </div>
-        <div>
-          <span className="story-label">What the MCP adds</span>
-          <p>
-            Instead of another chat wrapper, the MCP returns concrete workflow artifacts: readiness scoring, evidence
-            citations, referral packets, pre-visit prep, follow-up tasks, and FHIR-native export bundles.
-          </p>
         </div>
       </section>
 
       <section className="section-block">
         <div className="section-head">
           <p className="eyebrow">Rehearsal Cases</p>
-          <h2>Same engine, demo-safe synthetic patients</h2>
+          <h2>Two short synthetic referral cases</h2>
+          <p className="section-intro">
+            Both previews come from the same engine used by the MCP tools, shortened here for fast judge scanning.
+          </p>
         </div>
 
         {loading ? (
@@ -240,32 +281,34 @@ export default function App() {
         )}
       </section>
 
-      <section className="section-block architecture">
+      <section className="section-block">
         <div className="section-head">
           <p className="eyebrow">Architecture</p>
-          <h2>Thin worker, strong rules, optional narrative generation</h2>
+          <h2>Thin worker, deterministic rules, selective generation</h2>
+          <p className="section-intro">
+            The UI stays light because the actual clinical workflow logic lives in the worker and referral engine.
+          </p>
         </div>
 
         <div className="architecture-grid">
-          <div className="arch-card">
+          <article className="arch-card">
             <h3>Prompt Opinion</h3>
-            <p>Patient context, agent orchestration, Marketplace publish path, and the in-platform judge demo.</p>
-          </div>
-          <div className="arch-card">
+            <p>Patient context, in-platform orchestration, and the final Marketplace path.</p>
+          </article>
+          <article className="arch-card">
             <h3>Cloudflare Worker</h3>
-            <p>Stateless MCP endpoint that reads FHIR headers, applies referral rules, and exports structured FHIR artifacts.</p>
-          </div>
-          <div className="arch-card">
+            <p>Stateless MCP endpoint that reads FHIR headers and returns structured outputs.</p>
+          </article>
+          <article className="arch-card">
             <h3>Referral Engine</h3>
-            <p>Deterministic specialty playbooks for readiness scoring, missing-workup detection, and red-flag surfacing.</p>
-          </div>
-          <div className="arch-card">
+            <p>Deterministic specialty playbooks for readiness scoring, missing-workup checks, and export shaping.</p>
+          </article>
+          <article className="arch-card">
             <h3>Google AI</h3>
-            <p>Used only for narrative lift on packet drafting, patient prep, and follow-up task phrasing.</p>
-          </div>
+            <p>Used only for narrative lift on packets, patient prep, and task phrasing when enabled.</p>
+          </article>
         </div>
       </section>
     </main>
   );
 }
-
