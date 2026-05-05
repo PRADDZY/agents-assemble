@@ -91,12 +91,17 @@ a {
   margin-top: 1.5rem;
 }
 
-.hero-links a {
+.hero-links a,
+.hero-links span {
   padding: 0.88rem 1.1rem;
   border-radius: 999px;
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.72);
   font-weight: 600;
+}
+
+.hero-links span {
+  color: var(--muted);
 }
 
 .hero-metrics {
@@ -158,6 +163,48 @@ a {
   display: grid;
   gap: 1.2rem;
   margin-top: 1.4rem;
+}
+
+.launch-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.3rem;
+}
+
+.launch-card {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.8);
+  display: grid;
+  gap: 0.7rem;
+}
+
+.launch-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+}
+
+.launch-head span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.launch-head strong {
+  font-size: 1rem;
+}
+
+.launch-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.launch-card a {
+  font-weight: 700;
 }
 
 .case-card {
@@ -279,6 +326,7 @@ a {
   .hero-panel,
   .story-strip,
   .case-grid,
+  .launch-grid,
   .architecture-grid {
     grid-template-columns: 1fr;
   }

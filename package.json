@@ -7,9 +7,10 @@
     "build": "pnpm -r --if-present build",
     "dev:worker": "pnpm --filter @agents-assemble/mcp-worker dev",
     "dev:ui": "pnpm --filter @agents-assemble/proof-ui dev",
-    "deploy:worker": "pnpm --filter @agents-assemble/mcp-worker deploy",
-    "deploy:ui": "pnpm --filter @agents-assemble/proof-ui deploy",
+    "deploy:worker": "pnpm --filter @agents-assemble/mcp-worker run deploy",
+    "deploy:ui": "pnpm --filter @agents-assemble/proof-ui run deploy",
     "secretcheck": "node scripts/check-no-secrets.mjs",
+    "submissioncheck": "node scripts/submission-check.mjs",
     "test": "pnpm -r --if-present test",
     "typecheck": "pnpm -r --if-present typecheck",
     "verify": "pnpm typecheck && pnpm test && pnpm build && pnpm secretcheck"

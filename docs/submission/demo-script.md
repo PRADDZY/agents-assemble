@@ -9,11 +9,11 @@ Show a complete Prompt Opinion workflow in under 3 minutes.
 1. Open Prompt Opinion with a synthetic patient already imported.
 2. Show the Marketplace entry for `Referral Ready MCP`.
 3. Open the patient context and invoke `Referral Coordinator`.
-4. Ask for a `gastroenterology` referral readiness review.
+4. Ask: `Prepare a gastroenterology referral readiness review for this patient.`
 5. Show the missing-workup table and alarm findings.
-6. Ask for the referral packet.
-7. Ask for patient prep.
-8. Ask for follow-up tasks.
+6. Ask: `Now draft the specialist referral packet.`
+7. Ask: `Now give me patient prep.`
+8. Ask: `Now create follow-up tasks to close the gap.`
 9. End on the proof UI or repo page to reinforce architecture and public availability.
 
 ## What to emphasize

@@ -3,9 +3,26 @@ import type { CaseStudy } from "./cases";
 import { loadCaseStudies } from "./cases";
 
 const repoUrl = import.meta.env.VITE_PUBLIC_REPO_URL || "https://github.com/PRADDZY/agents-assemble";
-const marketplaceUrl = import.meta.env.VITE_MARKETPLACE_URL || "https://app.promptopinion.com/marketplace";
-const mcpUrl = import.meta.env.VITE_MCP_URL || "";
+const marketplaceUrl = import.meta.env.VITE_MARKETPLACE_URL || "";
+const mcpUrl = import.meta.env.VITE_MCP_URL || "https://referral-ready-mcp.dpratik3005.workers.dev/mcp";
 const demoVideoUrl = import.meta.env.VITE_DEMO_VIDEO_URL || "";
+
+function LaunchCard(props: { label: string; status: string; detail: string; href?: string }) {
+  return (
+    <article className="launch-card">
+      <div className="launch-head">
+        <span>{props.label}</span>
+        <strong>{props.status}</strong>
+      </div>
+      <p>{props.detail}</p>
+      {props.href ? (
+        <a href={props.href} target="_blank" rel="noreferrer">
+          Open link
+        </a>
+      ) : null}
+    </article>
+  );
+}
 
 function MetricCard(props: { label: string; value: string; tone?: "warm" | "cool" }) {
   return (
@@ -71,6 +88,7 @@ function ReadinessCase({ caseStudy }: { caseStudy: CaseStudy }) {
 export default function App() {
   const [cases, setCases] = useState<CaseStudy[]>([]);
   const [loading, setLoading] = useState(true);
+  const heroKicker = marketplaceUrl ? "Published Prompt Opinion MCP" : "Prompt Opinion-ready MCP";
 
   useEffect(() => {
     let mounted = true;
@@ -96,7 +114,7 @@ export default function App() {
     <main className="page-shell">
       <section className="hero-panel">
         <div className="hero-copy">
-          <p className="hero-kicker">Prompt Opinion Marketplace Candidate</p>
+          <p className="hero-kicker">{heroKicker}</p>
           <h1>Referral Ready MCP</h1>
           <p className="hero-subtitle">
             A healthcare MCP superpower that reads patient context, spots missing workup, drafts specialist-ready packets,
@@ -107,9 +125,13 @@ export default function App() {
             <a href={repoUrl} target="_blank" rel="noreferrer">
               GitHub Repo
             </a>
-            <a href={marketplaceUrl} target="_blank" rel="noreferrer">
-              Prompt Opinion Marketplace
-            </a>
+            {marketplaceUrl ? (
+              <a href={marketplaceUrl} target="_blank" rel="noreferrer">
+                Prompt Opinion Marketplace
+              </a>
+            ) : (
+              <span>Marketplace link pending publish</span>
+            )}
             {mcpUrl ? (
               <a href={mcpUrl} target="_blank" rel="noreferrer">
                 MCP Endpoint
@@ -128,6 +150,40 @@ export default function App() {
           <MetricCard label="Demo data" value="Synthetic FHIR R4" />
           <MetricCard label="Core outputs" value="Table + Template + Tasks" />
           <MetricCard label="MVP specialties" value="GI + Cardiology" tone="warm" />
+        </div>
+      </section>
+
+      <section className="section-block">
+        <div className="section-head">
+          <p className="eyebrow">Submission Surface</p>
+          <h2>Public artifacts and publish path</h2>
+        </div>
+
+        <div className="launch-grid">
+          <LaunchCard
+            label="GitHub Repo"
+            status="Live"
+            detail="Public source repo for judges, setup, and verification."
+            href={repoUrl}
+          />
+          <LaunchCard
+            label="MCP Worker"
+            status={mcpUrl ? "Live" : "Set URL"}
+            detail="Public MCP endpoint used by Prompt Opinion and smoke tests."
+            href={mcpUrl || undefined}
+          />
+          <LaunchCard
+            label="Marketplace Entry"
+            status={marketplaceUrl ? "Published" : "Publish pending"}
+            detail="Attach the final Prompt Opinion share link here after Marketplace publish."
+            href={marketplaceUrl || undefined}
+          />
+          <LaunchCard
+            label="Demo Video"
+            status={demoVideoUrl ? "Attached" : "User-owned"}
+            detail="Video remains outside the repo flow and should be added after the in-platform run is stable."
+            href={demoVideoUrl || undefined}
+          />
         </div>
       </section>
 
@@ -174,7 +230,7 @@ export default function App() {
         <div className="architecture-grid">
           <div className="arch-card">
             <h3>Prompt Opinion</h3>
-            <p>Patient context, agent orchestration, Marketplace publish path, and in-platform demo.</p>
+            <p>Patient context, agent orchestration, Marketplace publish path, and the in-platform judge demo.</p>
           </div>
           <div className="arch-card">
             <h3>Cloudflare Worker</h3>

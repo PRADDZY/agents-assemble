@@ -66,12 +66,34 @@ Run the full verification pass:
 pnpm verify
 ```
 
+Run the public submission smoke checks:
+
+```bash
+pnpm submissioncheck
+```
+
 That runs:
 
 - workspace type-checks
 - unit tests
 - builds
 - a lightweight secret-pattern scan
+
+The submission smoke check hits the deployed worker, MCP endpoint, proof UI, and public repo. If you already have the final Marketplace share link in PowerShell, run:
+
+```powershell
+$env:MARKETPLACE_URL = "https://app.promptopinion.ai/..."
+pnpm submissioncheck
+Remove-Item Env:MARKETPLACE_URL
+```
+
+## Public links
+
+- GitHub repo: `https://github.com/PRADDZY/agents-assemble`
+- MCP worker: `https://referral-ready-mcp.dpratik3005.workers.dev/mcp`
+- Worker health: `https://referral-ready-mcp.dpratik3005.workers.dev/health`
+- Proof UI: `https://referral-ready-proof-ui.pages.dev`
+- Prompt Opinion Marketplace share link: add after publish
 
 ## Deployment
 
@@ -87,7 +109,12 @@ Deploy the proof UI:
 pnpm deploy:ui
 ```
 
-Before deploying the worker in live mode, set secrets with `wrangler secret put` instead of writing them into tracked files.
+Before deploying the worker in live mode, set secrets with `wrangler secret put` instead of writing them into tracked files:
+
+```bash
+pnpm --filter @agents-assemble/mcp-worker exec wrangler secret put GOOGLE_AI_API_KEY
+pnpm --filter @agents-assemble/mcp-worker exec wrangler secret list
+```
 
 ## Prompt Opinion integration
 
@@ -112,9 +139,13 @@ The repo includes two synthetic rehearsal cases:
 
 ## Submission assets
 
-- Demo checklist: [docs/submission/marketplace-checklist.md](docs/submission/marketplace-checklist.md)
+- Marketplace checklist: [docs/submission/marketplace-checklist.md](docs/submission/marketplace-checklist.md)
 - Demo script: [docs/submission/demo-script.md](docs/submission/demo-script.md)
 - Architecture note: [docs/submission/architecture.md](docs/submission/architecture.md)
+- Prompt Opinion runbook: [docs/submission/prompt-opinion-runbook.md](docs/submission/prompt-opinion-runbook.md)
+- Referral Coordinator prompt: [docs/submission/referral-coordinator-prompt.md](docs/submission/referral-coordinator-prompt.md)
+- Judging map: [docs/submission/judging-map.md](docs/submission/judging-map.md)
+- Smoke tests: [docs/submission/smoke-tests.md](docs/submission/smoke-tests.md)
 
 ## Scope note
 
