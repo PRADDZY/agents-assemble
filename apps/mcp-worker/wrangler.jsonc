@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "referral-ready-mcp",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-05-05",
+  "vars": {
+    "DEMO_MODE": "true",
+    "GOOGLE_MODEL": "gemini-2.0-flash",
+    "LOG_LEVEL": "info",
+    "ALLOWED_FHIR_HOSTS": "app.promptopinion.ai"
+  }
+}
+

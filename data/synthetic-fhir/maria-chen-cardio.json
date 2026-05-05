@@ -1,0 +1,91 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "maria-chen",
+        "name": [{ "given": ["Maria"], "family": "Chen" }],
+        "gender": "female",
+        "birthDate": "1962-09-02"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-htn",
+        "subject": { "reference": "Patient/maria-chen" },
+        "code": { "text": "Hypertension" }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-hld",
+        "subject": { "reference": "Patient/maria-chen" },
+        "code": { "text": "Hyperlipidemia" }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-bp",
+        "subject": { "reference": "Patient/maria-chen" },
+        "code": {
+          "text": "Blood pressure panel",
+          "coding": [{ "system": "http://loinc.org", "code": "85354-9", "display": "Blood pressure panel with all children optional" }]
+        },
+        "valueQuantity": { "value": "152/92", "unit": "mmHg" }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-ldl",
+        "subject": { "reference": "Patient/maria-chen" },
+        "code": {
+          "text": "LDL cholesterol",
+          "coding": [{ "system": "http://loinc.org", "code": "2089-1", "display": "Cholesterol in LDL [Mass/volume] in Serum or Plasma" }]
+        },
+        "valueQuantity": { "value": 138, "unit": "mg/dL" }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-losartan",
+        "status": "active",
+        "intent": "order",
+        "subject": { "reference": "Patient/maria-chen" },
+        "medicationCodeableConcept": { "text": "Losartan 50 mg daily" }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "diag-ecg",
+        "subject": { "reference": "Patient/maria-chen" },
+        "code": { "text": "ECG report" },
+        "conclusion": "12-lead ECG shows normal sinus rhythm with occasional premature atrial complexes."
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "DocumentReference",
+        "id": "note-cardio-referral",
+        "status": "current",
+        "description": "Primary care referral note",
+        "subject": { "reference": "Patient/maria-chen" },
+        "content": [
+          {
+            "attachment": {
+              "contentType": "text/plain",
+              "data": "TWFyaWEgQ2hlbiByZXBvcnRzIDYgd2Vla3Mgb2YgaW50ZXJtaXR0ZW50IHBhbHBpdGF0aW9ucyBhbmQgbWlsZCBleGVydGlvbmFsIGNoZXN0IHByZXNzdXJlIHdoZW4gY2xpbWJpbmcgc3RhaXJzLiBTaGUgaGFzIG5vIHN5bmNvcGUgYnV0IGRvZXMgZmVlbCBsaWdodGhlYWRlZCBkdXJpbmcgZXBpc29kZXMuIEVDRyBpbiBjbGluaWMgc2hvd2VkIHNpbnVzIHJoeXRobSB3aXRoIG9jY2FzaW9uYWwgcHJlbWF0dXJlIGF0cmlhbCBjb21wbGV4ZXMuIFJlcXVlc3Q6IGNhcmRpb2xvZ3kgZXZhbHVhdGlvbiBmb3IgcGFscGl0YXRpb25zIGFuZCBleGVydGlvbmFsIHN5bXB0b21zLi"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

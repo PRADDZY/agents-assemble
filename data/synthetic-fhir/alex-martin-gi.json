@@ -1,0 +1,84 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "alex-martin",
+        "name": [{ "given": ["Alex"], "family": "Martin" }],
+        "gender": "male",
+        "birthDate": "1979-01-12"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-gerd",
+        "subject": { "reference": "Patient/alex-martin" },
+        "code": { "text": "Gastroesophageal reflux disease" }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-hgb",
+        "subject": { "reference": "Patient/alex-martin" },
+        "code": {
+          "text": "Hemoglobin",
+          "coding": [{ "system": "http://loinc.org", "code": "718-7", "display": "Hemoglobin [Mass/volume] in Blood" }]
+        },
+        "valueQuantity": { "value": 11.8, "unit": "g/dL" }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-fit",
+        "subject": { "reference": "Patient/alex-martin" },
+        "code": {
+          "text": "Fecal occult blood",
+          "coding": [{ "system": "http://loinc.org", "code": "12503-9", "display": "Occult blood [Presence] in Stool" }]
+        },
+        "valueString": "Positive"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "med-omeprazole",
+        "status": "active",
+        "intent": "order",
+        "subject": { "reference": "Patient/alex-martin" },
+        "medicationCodeableConcept": { "text": "Omeprazole 20 mg daily" }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "enc-gi-visit",
+        "status": "finished",
+        "subject": { "reference": "Patient/alex-martin" },
+        "reasonCode": [{ "text": "Persistent epigastric pain and reflux symptoms" }]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "DocumentReference",
+        "id": "note-gi-referral",
+        "status": "current",
+        "description": "PCP follow-up note",
+        "subject": { "reference": "Patient/alex-martin" },
+        "content": [
+          {
+            "attachment": {
+              "contentType": "text/plain",
+              "data": "QWxleCBNYXJ0aW4gaGFzIGhhZCAzIG1vbnRocyBvZiBlcGlnYXN0cmljIHBhaW4sIGVhcmx5IHNhdGlldHksIGFuZCBicmVha3Rocm91Z2ggcmVmbHV4IGRlc3BpdGUgb21lcHJhem9sZS4gSGUgaGFzIGxvc3QgOCBsYnMgdW5pbnRlbnRpb25hbGx5LiBGSVQgdGVzdGluZyByZXR1cm5lZCBwb3NpdGl2ZS4gRmFtaWx5IGhpc3Rvcnkgb2YgY29sb24gY2FuY2VyIGluIGhpcyBmYXRoZXIuIFJlcXVlc3Q6IEdJIGV2YWx1YXRpb24gZm9yIGFsYXJtIHN5bXB0b21zIGFuZCBuZWVkIGZvciBlbmRvc2NvcHkuIENNUC9saXZlciBsYWJzIG5vdCB5ZXQgZHJhd24u"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+

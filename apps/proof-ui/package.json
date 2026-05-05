@@ -1,0 +1,28 @@
+{
+  "name": "@agents-assemble/proof-ui",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "deploy": "pnpm build && wrangler pages deploy dist --project-name referral-ready-proof-ui",
+    "dev": "vite",
+    "test": "vitest run --passWithNoTests",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@agents-assemble/fhir-utils": "workspace:*",
+    "@agents-assemble/referral-engine": "workspace:*",
+    "@agents-assemble/shared-types": "workspace:*",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.4",
+    "@types/react-dom": "^19.1.5",
+    "@vitejs/plugin-react": "^4.5.2",
+    "vite": "^6.3.5",
+    "vitest": "^3.2.4",
+    "wrangler": "^4.87.0"
+  }
+}

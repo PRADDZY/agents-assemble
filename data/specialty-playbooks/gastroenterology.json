@@ -1,0 +1,102 @@
+{
+  "specialtyId": "gastroenterology",
+  "displayName": "Gastroenterology",
+  "shortDescription": "Readiness checks for outpatient GI referrals driven by symptom notes, labs, stool testing, and medication context.",
+  "defaultReferralQuestion": "Prepare a gastroenterology referral packet for persistent abdominal symptoms with alarm features.",
+  "requiredEvidence": [
+    {
+      "id": "gi-referral-reason",
+      "label": "Clear GI referral reason",
+      "description": "The chart should explain the GI symptom cluster and why specialist input is needed.",
+      "rationale": "GI triage is faster when the note clearly states the referral question.",
+      "suggestedAction": "Add a concise symptom-focused referral question with duration and alarm features.",
+      "resourceTypes": ["DocumentReference", "Encounter", "Condition"],
+      "keywords": ["abdominal pain", "epigastric pain", "reflux", "positive fit", "weight loss", "dysphagia"]
+    },
+    {
+      "id": "cbc-data",
+      "label": "Recent CBC data",
+      "description": "Recent CBC or hemoglobin data should be available.",
+      "rationale": "Anemia or blood loss concerns materially change GI urgency.",
+      "suggestedAction": "Order or attach a recent CBC before sending the referral.",
+      "resourceTypes": ["Observation"],
+      "observationCodes": ["718-7"]
+    },
+    {
+      "id": "symptom-history",
+      "label": "Structured symptom history",
+      "description": "Duration, triggers, and associated symptoms should be documented.",
+      "rationale": "GI specialists need a coherent symptom narrative to triage correctly.",
+      "suggestedAction": "Document duration, weight change, bleeding, and prior treatment response.",
+      "resourceTypes": ["DocumentReference", "Encounter"],
+      "keywords": ["months", "weight loss", "early satiety", "nausea", "bowel", "bleeding"]
+    },
+    {
+      "id": "baseline-labs",
+      "label": "Baseline chemistry or liver markers",
+      "description": "Recent chemistry or liver-related labs should be visible.",
+      "rationale": "Baseline labs help specialists prioritize workup and urgency.",
+      "suggestedAction": "Attach CMP or liver tests before sending the referral.",
+      "resourceTypes": ["Observation"],
+      "observationCodes": ["1742-6", "1920-8", "1975-2"]
+    },
+    {
+      "id": "active-meds",
+      "label": "Active medication list",
+      "description": "Current GI-relevant medications should be available.",
+      "rationale": "Medication context changes GI differential and pre-visit planning.",
+      "suggestedAction": "Reconcile acid suppression, NSAID, and anticoagulant medications before referral.",
+      "resourceTypes": ["MedicationRequest"]
+    }
+  ],
+  "optionalEvidence": [
+    {
+      "id": "stool-testing",
+      "label": "Stool testing or occult blood data",
+      "description": "Recent stool testing strengthens GI triage.",
+      "rationale": "Helpful for triage but not mandatory in every case.",
+      "suggestedAction": "Attach stool study results when available.",
+      "resourceTypes": ["Observation"],
+      "observationCodes": ["12503-9"]
+    }
+  ],
+  "redFlags": [
+    {
+      "id": "gi-bleeding-flag",
+      "label": "Possible GI bleeding",
+      "severity": "high",
+      "keywords": ["melena", "hematemesis", "positive fit", "occult blood"],
+      "message": "Possible bleeding or high-risk alarm finding may need expedited GI escalation."
+    },
+    {
+      "id": "gi-weight-loss-flag",
+      "label": "Unintentional weight loss",
+      "severity": "medium",
+      "keywords": ["weight loss", "early satiety", "night sweats"],
+      "message": "Alarm symptoms suggest the referral should not be treated as routine."
+    }
+  ],
+  "packetSections": [
+    {
+      "id": "reason",
+      "title": "Referral Reason",
+      "promptHint": "Summarize the symptom pattern, timeline, and clinical question for GI."
+    },
+    {
+      "id": "history",
+      "title": "Pertinent GI History",
+      "promptHint": "Summarize alarm features, prior therapy, and symptom progression."
+    },
+    {
+      "id": "workup",
+      "title": "Completed Workup",
+      "promptHint": "List available labs, stool studies, and related chart findings."
+    },
+    {
+      "id": "gaps",
+      "title": "Open Gaps Before Visit",
+      "promptHint": "Call out missing data that should be gathered before specialist review."
+    }
+  ]
+}
+

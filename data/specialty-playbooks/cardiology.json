@@ -1,0 +1,102 @@
+{
+  "specialtyId": "cardiology",
+  "displayName": "Cardiology",
+  "shortDescription": "Readiness checks for outpatient cardiology referrals driven by symptoms, vitals, ECG data, and active medications.",
+  "defaultReferralQuestion": "Prepare a cardiology referral packet focused on palpitations and exertional symptoms.",
+  "requiredEvidence": [
+    {
+      "id": "cardio-referral-reason",
+      "label": "Clear cardiovascular referral reason",
+      "description": "The chart should explain symptoms or concern that justify specialty review.",
+      "rationale": "Specialists need the triage question up front to route the referral correctly.",
+      "suggestedAction": "Add a concise referral question with symptom duration and main concern.",
+      "resourceTypes": ["DocumentReference", "Encounter", "Condition"],
+      "keywords": ["palpitations", "chest pressure", "exertional", "dyspnea", "arrhythmia"]
+    },
+    {
+      "id": "recent-vitals",
+      "label": "Recent vitals or blood pressure data",
+      "description": "Recent BP or vitals should be visible in the chart.",
+      "rationale": "Baseline hemodynamics affect urgency and treatment planning.",
+      "suggestedAction": "Obtain and document repeat vitals before sending the referral.",
+      "resourceTypes": ["Observation"],
+      "observationCodes": ["85354-9", "8480-6", "8462-4"]
+    },
+    {
+      "id": "ecg-data",
+      "label": "ECG or rhythm data",
+      "description": "Recent ECG/rhythm information should be available for palpitations or chest symptoms.",
+      "rationale": "Cardiology triage is materially stronger when recent rhythm data is included.",
+      "suggestedAction": "Attach a recent ECG or rhythm report before sending the referral.",
+      "resourceTypes": ["DiagnosticReport", "DocumentReference"],
+      "keywords": ["ecg", "ekg", "sinus rhythm", "palpitations"]
+    },
+    {
+      "id": "active-meds",
+      "label": "Active cardiovascular medication list",
+      "description": "Active medications should be available to the specialist.",
+      "rationale": "Medication context changes workup and urgency.",
+      "suggestedAction": "Reconcile active medications before completing the referral.",
+      "resourceTypes": ["MedicationRequest"]
+    },
+    {
+      "id": "problem-list",
+      "label": "Relevant problem list or comorbidities",
+      "description": "Relevant chronic conditions such as hypertension or hyperlipidemia should be present.",
+      "rationale": "Baseline cardiovascular risk factors help frame the specialist question.",
+      "suggestedAction": "Update the problem list with active cardiometabolic conditions.",
+      "resourceTypes": ["Condition"],
+      "keywords": ["hypertension", "hyperlipidemia", "diabetes"]
+    }
+  ],
+  "optionalEvidence": [
+    {
+      "id": "lipid-data",
+      "label": "Recent lipid data",
+      "description": "Recent lipid panel values strengthen the referral packet.",
+      "rationale": "Useful for outpatient risk stratification but not mandatory for every referral.",
+      "suggestedAction": "Add the most recent lipid panel if available.",
+      "resourceTypes": ["Observation"],
+      "observationCodes": ["2089-1"]
+    }
+  ],
+  "redFlags": [
+    {
+      "id": "unstable-angina-flag",
+      "label": "Possible unstable symptoms",
+      "severity": "high",
+      "keywords": ["worsening chest pressure", "rest chest pain", "syncope", "near syncope"],
+      "message": "Symptoms may warrant same-day escalation instead of routine referral."
+    },
+    {
+      "id": "heart-failure-flag",
+      "label": "Possible heart failure symptoms",
+      "severity": "medium",
+      "keywords": ["orthopnea", "lower extremity edema", "paroxysmal nocturnal dyspnea"],
+      "message": "Documented symptoms suggest higher-risk cardiology triage."
+    }
+  ],
+  "packetSections": [
+    {
+      "id": "reason",
+      "title": "Referral Reason",
+      "promptHint": "State the presenting symptoms, duration, and referral objective."
+    },
+    {
+      "id": "history",
+      "title": "Pertinent History",
+      "promptHint": "Summarize cardiovascular risk factors, symptoms, and recent vitals."
+    },
+    {
+      "id": "workup",
+      "title": "Completed Workup",
+      "promptHint": "List ECG data, labs, and chart findings already available."
+    },
+    {
+      "id": "gaps",
+      "title": "Open Gaps Before Visit",
+      "promptHint": "Call out missing information that would strengthen the referral."
+    }
+  ]
+}
+

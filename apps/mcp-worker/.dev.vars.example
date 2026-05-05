@@ -1,0 +1,7 @@
+GOOGLE_AI_API_KEY=replace-me
+GOOGLE_MODEL=gemini-2.0-flash
+DEMO_MODE=true
+LOG_LEVEL=info
+ALLOWED_FHIR_HOSTS=app.promptopinion.ai
+PUBLIC_MCP_BASE_URL=https://referral-ready-mcp.<your-subdomain>.workers.dev
+
