@@ -39,6 +39,8 @@
 5. Ask: `Now draft the specialist referral packet.`
 6. Ask: `Now give me patient prep.`
 7. Ask: `Now create follow-up tasks to close the gap.`
+8. Ask: `Now export the referral bundle as FHIR resources.`
+9. Confirm the response includes Task and DocumentReference resources.
 
 ## Cardiology rehearsal
 
@@ -49,7 +51,7 @@
    - palpitations / rhythm concern
    - ECG support
    - active medication context
-5. Ask for the packet, patient prep, and follow-up tasks only if the GI flow is already stable.
+5. Ask for the packet, patient prep, follow-up tasks, and FHIR export only if the GI flow is already stable.
 
 ## Publish-close actions
 

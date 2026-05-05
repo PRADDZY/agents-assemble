@@ -56,6 +56,7 @@ Use this list as the final gate before you record the demo video or open the Dev
 - The demo flow uses only synthetic or de-identified data.
 - The MCP server works from a live patient context, not just `demoBundleId`.
 - The final public Marketplace share link opens successfully.
+- The export tool returns a FHIR bundle from the live Prompt Opinion workflow.
 
 ## User-owned tasks
 

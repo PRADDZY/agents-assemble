@@ -81,6 +81,24 @@ function ReadinessCase({ caseStudy }: { caseStudy: CaseStudy }) {
           </div>
         ))}
       </div>
+
+      <div className="packet-preview">
+        <h4>FHIR export</h4>
+        <div className="packet-section">
+          <strong>{caseStudy.exportBundle.bundleType.toUpperCase()} Bundle</strong>
+          <p>
+            {caseStudy.exportBundle.artifactCounts.taskCount} Task resource
+            {caseStudy.exportBundle.artifactCounts.taskCount === 1 ? "" : "s"}, {caseStudy.exportBundle.artifactCounts.documentReferenceCount}
+            {" "}DocumentReference, {caseStudy.exportBundle.artifactCounts.provenanceCount} Provenance
+          </p>
+        </div>
+        {caseStudy.exportBundle.validationNotes.slice(0, 1).map((note) => (
+          <div key={note.message} className="packet-section">
+            <strong>{note.level === "warning" ? "Export warning" : "Export note"}</strong>
+            <p>{note.message}</p>
+          </div>
+        ))}
+      </div>
     </article>
   );
 }
@@ -118,7 +136,8 @@ export default function App() {
           <h1>Referral Ready MCP</h1>
           <p className="hero-subtitle">
             A healthcare MCP superpower that reads patient context, spots missing workup, drafts specialist-ready packets,
-            and prepares patient outreach without pretending that generic chat is clinical workflow.
+            prepares patient outreach, and exports standards-native FHIR artifacts without pretending that generic chat is
+            clinical workflow.
           </p>
 
           <div className="hero-links">
@@ -148,7 +167,7 @@ export default function App() {
         <div className="hero-metrics">
           <MetricCard label="Contest lane" value="MCP Superpower" tone="warm" />
           <MetricCard label="Demo data" value="Synthetic FHIR R4" />
-          <MetricCard label="Core outputs" value="Table + Template + Tasks" />
+          <MetricCard label="Core outputs" value="Table + Template + Tasks + FHIR Bundle" />
           <MetricCard label="MVP specialties" value="GI + Cardiology" tone="warm" />
         </div>
       </section>
@@ -199,7 +218,7 @@ export default function App() {
           <span className="story-label">What the MCP adds</span>
           <p>
             Instead of another chat wrapper, the MCP returns concrete workflow artifacts: readiness scoring, evidence
-            citations, referral packets, pre-visit prep, and follow-up tasks.
+            citations, referral packets, pre-visit prep, follow-up tasks, and FHIR-native export bundles.
           </p>
         </div>
       </section>
@@ -234,7 +253,7 @@ export default function App() {
           </div>
           <div className="arch-card">
             <h3>Cloudflare Worker</h3>
-            <p>Stateless MCP endpoint that reads FHIR headers, applies referral rules, and returns structured outputs.</p>
+            <p>Stateless MCP endpoint that reads FHIR headers, applies referral rules, and exports structured FHIR artifacts.</p>
           </div>
           <div className="arch-card">
             <h3>Referral Engine</h3>

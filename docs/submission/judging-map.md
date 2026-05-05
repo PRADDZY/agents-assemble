@@ -6,6 +6,7 @@
 - Prompt Opinion passes live FHIR context into the worker, so the agent acts on patient-specific chart data rather than a pasted summary.
 - Deterministic rules own readiness scoring, missing-workup detection, and red-flag surfacing.
 - Google AI is used only where narrative lift matters: packet drafting, patient prep, and follow-up phrasing.
+- Referral Ready now exports FHIR-native artifacts, so the workflow ends in interoperable deliverables rather than UI-only text.
 
 ## Potential Impact
 
@@ -16,6 +17,7 @@
   - referral packet
   - patient prep
   - follow-up tasks
+  - FHIR export bundle
 - The demo is narrow enough to feel real, not aspirational.
 
 ## Feasibility
@@ -30,4 +32,4 @@
 - This runs inside Prompt Opinion.
 - It uses patient-context-aware MCP, not a one-off prompt.
 - It catches missing workup before the specialist visit is wasted.
-- It produces workflow artifacts, not generic summaries.
+- It produces workflow artifacts and FHIR-native exports, not generic summaries.

@@ -14,7 +14,9 @@ Show a complete Prompt Opinion workflow in under 3 minutes.
 6. Ask: `Now draft the specialist referral packet.`
 7. Ask: `Now give me patient prep.`
 8. Ask: `Now create follow-up tasks to close the gap.`
-9. End on the proof UI or repo page to reinforce architecture and public availability.
+9. Ask: `Now export the referral bundle as FHIR resources.`
+10. Show the Task and DocumentReference resources briefly.
+11. End on the proof UI or repo page to reinforce architecture and public availability.
 
 ## What to emphasize
 

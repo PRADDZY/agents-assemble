@@ -25,6 +25,7 @@ Checks:
 - MCP `initialize`
 - MCP `tools/list`
 - MCP `analyze_referral_readiness` on the synthetic GI case
+- MCP `export_referral_bundle` on the synthetic GI case
 - public proof UI
 - public GitHub repo
 

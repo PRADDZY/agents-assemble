@@ -11,6 +11,7 @@ It is built for the `Agents Assemble` hackathon and focuses on one painful workf
 - Extracts evidence from FHIR resources and chart notes.
 - Drafts a specialist-ready referral packet.
 - Generates patient prep and care-team follow-up tasks.
+- Exports interoperable FHIR artifacts as Task, DocumentReference, and Provenance resources.
 - Supports two MVP specialties: `gastroenterology` and `cardiology`.
 
 ## Architecture

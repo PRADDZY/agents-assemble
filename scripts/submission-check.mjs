@@ -118,7 +118,8 @@ await check("MCP tools/list", async () => {
     "extract_referral_evidence",
     "draft_referral_packet",
     "draft_patient_prep",
-    "create_followup_tasks"
+    "create_followup_tasks",
+    "export_referral_bundle"
   ];
 
   for (const name of required) {
@@ -147,6 +148,33 @@ await check("MCP analyze_referral_readiness", async () => {
   const structured = payload.result?.structuredContent;
   if (!structured || structured.patientName !== "Alex Martin") {
     fail("Structured readiness payload was missing the expected synthetic patient.");
+  }
+});
+
+await check("MCP export_referral_bundle", async () => {
+  const payload = parseSseJson(
+    await postMcp({
+      jsonrpc: "2.0",
+      id: "export",
+      method: "tools/call",
+      params: {
+        name: "export_referral_bundle",
+        arguments: {
+          specialtyId: "gastroenterology",
+          demoBundleId: "alex-martin-gi",
+          exportMode: "full"
+        }
+      }
+    })
+  );
+
+  const structured = payload.result?.structuredContent;
+  if (!structured || structured.bundle?.resourceType !== "Bundle") {
+    fail("Structured export payload did not return a FHIR Bundle.");
+  }
+
+  if (structured.artifactCounts?.documentReferenceCount !== 1) {
+    fail("Export payload did not include the expected referral packet artifact.");
   }
 });
 

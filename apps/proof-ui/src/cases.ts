@@ -1,8 +1,8 @@
 import alexBundle from "../../../data/synthetic-fhir/alex-martin-gi.json";
 import mariaBundle from "../../../data/synthetic-fhir/maria-chen-cardio.json";
 import { createPatientContext } from "@agents-assemble/fhir-utils";
-import { analyzeReferralReadiness, createFollowupTasks, draftPatientPrep, draftReferralPacket } from "@agents-assemble/referral-engine";
-import type { FollowupTaskPlan, PatientPrepPlan, ReferralPacket, ReferralReadinessResult, SpecialtyId } from "@agents-assemble/shared-types";
+import { analyzeReferralReadiness, createFollowupTasks, draftPatientPrep, draftReferralPacket, exportReferralBundle } from "@agents-assemble/referral-engine";
+import type { FollowupTaskPlan, PatientPrepPlan, ReferralBundleExport, ReferralPacket, ReferralReadinessResult, SpecialtyId } from "@agents-assemble/shared-types";
 
 export interface CaseStudy {
   id: string;
@@ -14,6 +14,7 @@ export interface CaseStudy {
   packet: ReferralPacket;
   prep: PatientPrepPlan;
   tasks: FollowupTaskPlan;
+  exportBundle: ReferralBundleExport;
 }
 
 async function buildCaseStudy(id: string, specialtyId: SpecialtyId, bundle: unknown): Promise<CaseStudy> {
@@ -22,6 +23,7 @@ async function buildCaseStudy(id: string, specialtyId: SpecialtyId, bundle: unkn
   const packet = await draftReferralPacket({ specialtyId, context });
   const prep = await draftPatientPrep({ specialtyId, context });
   const tasks = await createFollowupTasks({ specialtyId, context });
+  const exportBundle = await exportReferralBundle({ specialtyId, context });
 
   return {
     id,
@@ -32,7 +34,8 @@ async function buildCaseStudy(id: string, specialtyId: SpecialtyId, bundle: unkn
     readiness,
     packet,
     prep,
-    tasks
+    tasks,
+    exportBundle
   };
 }
 

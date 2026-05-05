@@ -3,12 +3,13 @@ import {
   createFollowupTasks,
   draftPatientPrep,
   draftReferralPacket,
+  exportReferralBundle,
   extractReferralEvidence,
   listSupportedSpecialties
 } from "@agents-assemble/referral-engine";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
-import { ReferralToolInputSchema } from "@agents-assemble/shared-types";
+import { ReferralExportToolInputSchema, ReferralToolInputSchema } from "@agents-assemble/shared-types";
 import { GoogleNarrativeGenerator } from "./google";
 import type { WorkerBindings } from "./config";
 import type { RequestContext } from "./fhir";
@@ -63,7 +64,7 @@ export function createReferralMcpServer(env: WorkerBindings, requestContext: Req
         }
       },
       instructions:
-        "Use list_supported_specialties first when unclear. Use analyze_referral_readiness before drafting packets or patient prep. Highlight alarm findings explicitly and never fabricate clinical facts."
+        "Use list_supported_specialties first when unclear. Use analyze_referral_readiness before drafting packets, patient prep, or export bundles. Highlight alarm findings explicitly and never fabricate clinical facts."
     }
   );
 
@@ -201,6 +202,34 @@ export function createReferralMcpServer(env: WorkerBindings, requestContext: Req
         await createFollowupTasks({
           specialtyId: args.specialtyId,
           referralQuestion: args.referralQuestion,
+          context,
+          generator
+        })
+      );
+    }
+  );
+
+  server.registerTool(
+    "export_referral_bundle",
+    {
+      title: "Export Referral Bundle",
+      description:
+        "Export standards-native referral artifacts as a FHIR Bundle containing Task, DocumentReference, and Provenance resources.",
+      inputSchema: ReferralExportToolInputSchema
+    },
+    async (args) => {
+      const context = await resolvePatientContext({
+        specialtyId: args.specialtyId,
+        demoBundleId: args.demoBundleId,
+        requestContext,
+        env
+      });
+      return toolResult(
+        "FHIR referral export",
+        await exportReferralBundle({
+          specialtyId: args.specialtyId,
+          referralQuestion: args.referralQuestion,
+          exportMode: args.exportMode,
           context,
           generator
         })

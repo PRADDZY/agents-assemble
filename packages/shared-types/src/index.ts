@@ -13,6 +13,14 @@ export const ReferralToolInputSchema = z.object({
 });
 export type ReferralToolInput = z.infer<typeof ReferralToolInputSchema>;
 
+export const ReferralExportModeSchema = z.enum(["tasks", "packet", "full"]);
+export type ReferralExportMode = z.infer<typeof ReferralExportModeSchema>;
+
+export const ReferralExportToolInputSchema = ReferralToolInputSchema.extend({
+  exportMode: ReferralExportModeSchema.optional()
+});
+export type ReferralExportToolInput = z.infer<typeof ReferralExportToolInputSchema>;
+
 export interface Citation {
   resourceType: string;
   id: string;
@@ -173,6 +181,31 @@ export interface FollowupTaskPlan {
   tasks: FollowupTask[];
 }
 
+export interface ExportValidationNote {
+  level: "info" | "warning";
+  message: string;
+}
+
+export interface ReferralExportCounts {
+  taskCount: number;
+  documentReferenceCount: number;
+  provenanceCount: number;
+}
+
+export interface ReferralBundleExport {
+  specialtyId: SpecialtyId;
+  specialtyName: string;
+  patientName: string;
+  patientId: string | null;
+  exportMode: ReferralExportMode;
+  bundleType: "collection";
+  summary: string;
+  warnings: string[];
+  validationNotes: ExportValidationNote[];
+  artifactCounts: ReferralExportCounts;
+  bundle: FhirResource;
+}
+
 export const ReferralPacketSchema = z.object({
   specialtyId: SpecialtyIdSchema,
   specialtyName: z.string(),
@@ -219,5 +252,30 @@ export const FollowupTaskPlanSchema = z.object({
       detail: z.string()
     })
   )
+});
+
+export const ReferralBundleExportSchema = z.object({
+  specialtyId: SpecialtyIdSchema,
+  specialtyName: z.string(),
+  patientName: z.string(),
+  patientId: z.string().nullable(),
+  exportMode: ReferralExportModeSchema,
+  bundleType: z.literal("collection"),
+  summary: z.string(),
+  warnings: z.array(z.string()),
+  validationNotes: z.array(
+    z.object({
+      level: z.enum(["info", "warning"]),
+      message: z.string()
+    })
+  ),
+  artifactCounts: z.object({
+    taskCount: z.number(),
+    documentReferenceCount: z.number(),
+    provenanceCount: z.number()
+  }),
+  bundle: z.object({
+    resourceType: z.literal("Bundle")
+  }).passthrough()
 });
 
