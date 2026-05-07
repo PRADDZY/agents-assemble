@@ -39,12 +39,16 @@ Use this list as the final gate before you record the demo video or open the Dev
 11. Create the `Referral Coordinator` agent using [referral-coordinator-prompt.md](referral-coordinator-prompt.md).
 12. Run the GI rehearsal flow from [prompt-opinion-runbook.md](prompt-opinion-runbook.md).
 13. Run the cardiology rehearsal flow from [prompt-opinion-runbook.md](prompt-opinion-runbook.md).
-14. Publish the Marketplace entry.
-15. Open the published entry and capture the final `Share Link`.
+14. Publish the MCP Marketplace entry.
+15. Publish the `Referral Coordinator` BYO agent entry.
+16. Capture both final share links:
+   - MCP entry: `https://app.promptopinion.ai/marketplace/mcp/019e03f0-e8af-7305-a381-09001b3447dd`
+   - Agent entry: `https://app.promptopinion.ai/marketplace/agent/019e0421-5978-7c30-9032-aaa2efc3ff4b`
 
 ## Proof UI and docs
 
-- Set `VITE_MARKETPLACE_URL` to the final share link and redeploy the proof UI.
+- Set `VITE_MARKETPLACE_URL` to the MCP Marketplace link and redeploy the proof UI.
+- Set `VITE_AGENT_MARKETPLACE_URL` to the BYO agent Marketplace link before the same redeploy.
 - Leave `VITE_DEMO_VIDEO_URL` blank until the video is uploaded.
 - README still matches the deployed URLs and the Marketplace status.
 - No user-facing page still says `Marketplace Candidate`.
@@ -52,6 +56,7 @@ Use this list as the final gate before you record the demo video or open the Dev
 ## Qualification checks
 
 - The project is visible in the Prompt Opinion Marketplace.
+- The `Referral Coordinator` agent is visible in the Prompt Opinion Marketplace.
 - The project is invokable inside Prompt Opinion.
 - The demo flow uses only synthetic or de-identified data.
 - The MCP server works from a live patient context, not just `demoBundleId`.

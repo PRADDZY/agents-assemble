@@ -83,7 +83,7 @@ That runs:
 The submission smoke check hits the deployed worker, MCP endpoint, proof UI, and public repo. If you already have the final Marketplace share link in PowerShell, run:
 
 ```powershell
-$env:MARKETPLACE_URL = "https://app.promptopinion.ai/..."
+$env:MARKETPLACE_URL = "https://app.promptopinion.ai/marketplace/mcp/019e03f0-e8af-7305-a381-09001b3447dd"
 pnpm submissioncheck
 Remove-Item Env:MARKETPLACE_URL
 ```
@@ -94,7 +94,8 @@ Remove-Item Env:MARKETPLACE_URL
 - MCP worker: `https://referral-ready-mcp.dpratik3005.workers.dev/mcp`
 - Worker health: `https://referral-ready-mcp.dpratik3005.workers.dev/health`
 - Proof UI: `https://referral-ready-proof-ui.pages.dev`
-- Prompt Opinion Marketplace share link: add after publish
+- Prompt Opinion MCP Marketplace entry: `https://app.promptopinion.ai/marketplace/mcp/019e03f0-e8af-7305-a381-09001b3447dd`
+- Prompt Opinion BYO agent entry: `https://app.promptopinion.ai/marketplace/agent/019e0421-5978-7c30-9032-aaa2efc3ff4b`
 
 ## Deployment
 

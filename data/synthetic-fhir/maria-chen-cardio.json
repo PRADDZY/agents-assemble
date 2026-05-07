@@ -31,18 +31,20 @@
       "resource": {
         "resourceType": "Observation",
         "id": "obs-bp",
+        "status": "final",
         "subject": { "reference": "Patient/maria-chen" },
         "code": {
           "text": "Blood pressure panel",
           "coding": [{ "system": "http://loinc.org", "code": "85354-9", "display": "Blood pressure panel with all children optional" }]
         },
-        "valueQuantity": { "value": "152/92", "unit": "mmHg" }
+        "valueString": "152/92 mmHg"
       }
     },
     {
       "resource": {
         "resourceType": "Observation",
         "id": "obs-ldl",
+        "status": "final",
         "subject": { "reference": "Patient/maria-chen" },
         "code": {
           "text": "LDL cholesterol",
@@ -65,6 +67,7 @@
       "resource": {
         "resourceType": "DiagnosticReport",
         "id": "diag-ecg",
+        "status": "final",
         "subject": { "reference": "Patient/maria-chen" },
         "code": { "text": "ECG report" },
         "conclusion": "12-lead ECG shows normal sinus rhythm with occasional premature atrial complexes."
@@ -81,7 +84,7 @@
           {
             "attachment": {
               "contentType": "text/plain",
-              "data": "TWFyaWEgQ2hlbiByZXBvcnRzIDYgd2Vla3Mgb2YgaW50ZXJtaXR0ZW50IHBhbHBpdGF0aW9ucyBhbmQgbWlsZCBleGVydGlvbmFsIGNoZXN0IHByZXNzdXJlIHdoZW4gY2xpbWJpbmcgc3RhaXJzLiBTaGUgaGFzIG5vIHN5bmNvcGUgYnV0IGRvZXMgZmVlbCBsaWdodGhlYWRlZCBkdXJpbmcgZXBpc29kZXMuIEVDRyBpbiBjbGluaWMgc2hvd2VkIHNpbnVzIHJoeXRobSB3aXRoIG9jY2FzaW9uYWwgcHJlbWF0dXJlIGF0cmlhbCBjb21wbGV4ZXMuIFJlcXVlc3Q6IGNhcmRpb2xvZ3kgZXZhbHVhdGlvbiBmb3IgcGFscGl0YXRpb25zIGFuZCBleGVydGlvbmFsIHN5bXB0b21zLi"
+              "title": "Maria Chen reports 6 weeks of intermittent palpitations and mild exertional chest pressure when climbing stairs. She has no syncope but does feel lightheaded during episodes. ECG in clinic showed sinus rhythm with occasional premature atrial complexes. Request: cardiology evaluation for palpitations and exertional symptoms."
             }
           }
         ]

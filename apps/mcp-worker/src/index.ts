@@ -14,7 +14,17 @@ export function createApp() {
     cors({
       origin: "*",
       allowMethods: ["GET", "POST", "DELETE", "OPTIONS"],
-      allowHeaders: ["Content-Type", "mcp-session-id", "Last-Event-ID", "mcp-protocol-version"],
+      allowHeaders: [
+        "Content-Type",
+        "mcp-session-id",
+        "Last-Event-ID",
+        "mcp-protocol-version",
+        "X-FHIR-Server-URL",
+        "X-FHIR-Access-Token",
+        "X-Patient-ID",
+        "X-FHIR-Refresh-Token",
+        "X-FHIR-Refresh-Url"
+      ],
       exposeHeaders: ["mcp-session-id", "mcp-protocol-version"]
     })
   );

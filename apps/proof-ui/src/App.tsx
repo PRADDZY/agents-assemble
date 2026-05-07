@@ -4,6 +4,7 @@ import { loadCaseStudies } from "./cases";
 
 const repoUrl = import.meta.env.VITE_PUBLIC_REPO_URL || "https://github.com/PRADDZY/agents-assemble";
 const marketplaceUrl = import.meta.env.VITE_MARKETPLACE_URL || "";
+const agentMarketplaceUrl = import.meta.env.VITE_AGENT_MARKETPLACE_URL || "";
 const mcpUrl = import.meta.env.VITE_MCP_URL || "https://referral-ready-mcp.dpratik3005.workers.dev/mcp";
 const demoVideoUrl = import.meta.env.VITE_DEMO_VIDEO_URL || "";
 
@@ -185,6 +186,11 @@ export default function App() {
                 GitHub repo
               </a>
             )}
+            {agentMarketplaceUrl ? (
+              <a className="action-link" href={agentMarketplaceUrl} target="_blank" rel="noreferrer">
+                Coordinator agent
+              </a>
+            ) : null}
             {mcpUrl ? (
               <a className="action-link" href={mcpUrl} target="_blank" rel="noreferrer">
                 MCP endpoint
@@ -247,9 +253,16 @@ export default function App() {
           <LaunchCard
             label="Marketplace Entry"
             status={marketplaceUrl ? "Published" : "Publish pending"}
-            detail="Attach the final Prompt Opinion share link here after Marketplace publish."
+            detail="Published MCP Marketplace listing used as the primary submission surface."
             href={marketplaceUrl || undefined}
             tone={marketplaceUrl ? "positive" : "pending"}
+          />
+          <LaunchCard
+            label="Coordinator Agent"
+            status={agentMarketplaceUrl ? "Published" : "Publish pending"}
+            detail="Published BYO agent entry that exercises the MCP tools inside Prompt Opinion."
+            href={agentMarketplaceUrl || undefined}
+            tone={agentMarketplaceUrl ? "positive" : "pending"}
           />
           <LaunchCard
             label="Demo Video"

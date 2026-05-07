@@ -34,7 +34,7 @@ Checks:
 Run the same smoke check with the final share link in PowerShell:
 
 ```powershell
-$env:MARKETPLACE_URL = "https://app.promptopinion.ai/..."
+$env:MARKETPLACE_URL = "https://app.promptopinion.ai/marketplace/mcp/019e03f0-e8af-7305-a381-09001b3447dd"
 pnpm submissioncheck
 Remove-Item Env:MARKETPLACE_URL
 ```

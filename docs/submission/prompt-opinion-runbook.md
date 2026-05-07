@@ -24,8 +24,11 @@
 12. Save the MCP server.
 13. Create a new agent named `Referral Coordinator`.
 14. Paste the system prompt from [referral-coordinator-prompt.md](referral-coordinator-prompt.md).
-15. Publish the agent to the Marketplace.
-16. Open the published entry and copy the `Share Link`.
+15. Publish the MCP entry to the Marketplace.
+16. Publish the `Referral Coordinator` agent to the Marketplace.
+17. Copy both share links:
+   - MCP entry: `https://app.promptopinion.ai/marketplace/mcp/019e03f0-e8af-7305-a381-09001b3447dd`
+   - Agent entry: `https://app.promptopinion.ai/marketplace/agent/019e0421-5978-7c30-9032-aaa2efc3ff4b`
 
 ## GI rehearsal
 
@@ -55,7 +58,8 @@
 
 ## Publish-close actions
 
-1. Put the final Marketplace share link into `apps/proof-ui/.env.local` as `VITE_MARKETPLACE_URL`.
-2. Redeploy the proof UI with `pnpm deploy:ui`.
-3. Re-run `pnpm submissioncheck`.
-4. Only then record the video.
+1. Put the final MCP Marketplace share link into `apps/proof-ui/.env.local` as `VITE_MARKETPLACE_URL`.
+2. Put the final BYO agent share link into `apps/proof-ui/.env.local` as `VITE_AGENT_MARKETPLACE_URL`.
+3. Redeploy the proof UI with `pnpm deploy:ui`.
+4. Re-run `pnpm submissioncheck`.
+5. Only then record the video.

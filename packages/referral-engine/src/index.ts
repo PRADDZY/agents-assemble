@@ -48,6 +48,22 @@ export interface NarrativeGenerator {
   }): Promise<FollowupTaskPlan>;
 }
 
+async function withNarrativeFallback<T>(input: {
+  generator?: NarrativeGenerator;
+  run: (generator: NarrativeGenerator) => Promise<T>;
+  fallback: () => T;
+}): Promise<T> {
+  if (!input.generator) {
+    return input.fallback();
+  }
+
+  try {
+    return await input.run(input.generator);
+  } catch {
+    return input.fallback();
+  }
+}
+
 function toTitleCase(value: string): string {
   return value
     .split(/\s+/)
@@ -525,12 +541,11 @@ export async function draftReferralPacket(input: {
 }): Promise<ReferralPacket> {
   const playbook = getPlaybook(input.specialtyId);
   const readiness = analyzeReferralReadiness(input);
-
-  if (!input.generator) {
-    return fallbackPacket(playbook, readiness);
-  }
-
-  return input.generator.draftPacket({ playbook, context: input.context, readiness });
+  return withNarrativeFallback({
+    generator: input.generator,
+    run: (generator) => generator.draftPacket({ playbook, context: input.context, readiness }),
+    fallback: () => fallbackPacket(playbook, readiness)
+  });
 }
 
 export async function draftPatientPrep(input: {
@@ -541,12 +556,11 @@ export async function draftPatientPrep(input: {
 }): Promise<PatientPrepPlan> {
   const playbook = getPlaybook(input.specialtyId);
   const readiness = analyzeReferralReadiness(input);
-
-  if (!input.generator) {
-    return fallbackPrep(readiness);
-  }
-
-  return input.generator.draftPatientPrep({ playbook, context: input.context, readiness });
+  return withNarrativeFallback({
+    generator: input.generator,
+    run: (generator) => generator.draftPatientPrep({ playbook, context: input.context, readiness }),
+    fallback: () => fallbackPrep(readiness)
+  });
 }
 
 export async function createFollowupTasks(input: {
@@ -557,12 +571,11 @@ export async function createFollowupTasks(input: {
 }): Promise<FollowupTaskPlan> {
   const playbook = getPlaybook(input.specialtyId);
   const readiness = analyzeReferralReadiness(input);
-
-  if (!input.generator) {
-    return fallbackTasks(readiness);
-  }
-
-  return input.generator.draftTasks({ playbook, context: input.context, readiness });
+  return withNarrativeFallback({
+    generator: input.generator,
+    run: (generator) => generator.draftTasks({ playbook, context: input.context, readiness }),
+    fallback: () => fallbackTasks(readiness)
+  });
 }
 
 export async function exportReferralBundle(input: {

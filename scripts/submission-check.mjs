@@ -98,6 +98,11 @@ await check("MCP initialize", async () => {
   if (payload.result?.serverInfo?.name !== "referral-ready-mcp") {
     fail("Unexpected MCP serverInfo.name");
   }
+
+  const extension = payload.result?.capabilities?.extensions?.["ai.promptopinion/fhir-context"];
+  if (!extension) {
+    fail("MCP initialize did not advertise the Prompt Opinion FHIR extension.");
+  }
 });
 
 await check("MCP tools/list", async () => {
@@ -169,8 +174,8 @@ await check("MCP export_referral_bundle", async () => {
   );
 
   const structured = payload.result?.structuredContent;
-  if (!structured || structured.bundle?.resourceType !== "Bundle") {
-    fail("Structured export payload did not return a FHIR Bundle.");
+  if (!structured || structured.bundlePreview?.resourceType !== "Bundle") {
+    fail("Structured export payload did not return a FHIR Bundle preview.");
   }
 
   if (structured.artifactCounts?.documentReferenceCount !== 1) {

@@ -23,6 +23,7 @@
       "resource": {
         "resourceType": "Observation",
         "id": "obs-hgb",
+        "status": "final",
         "subject": { "reference": "Patient/alex-martin" },
         "code": {
           "text": "Hemoglobin",
@@ -35,6 +36,7 @@
       "resource": {
         "resourceType": "Observation",
         "id": "obs-fit",
+        "status": "final",
         "subject": { "reference": "Patient/alex-martin" },
         "code": {
           "text": "Fecal occult blood",
@@ -58,6 +60,11 @@
         "resourceType": "Encounter",
         "id": "enc-gi-visit",
         "status": "finished",
+        "class": {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "code": "AMB",
+          "display": "ambulatory"
+        },
         "subject": { "reference": "Patient/alex-martin" },
         "reasonCode": [{ "text": "Persistent epigastric pain and reflux symptoms" }]
       }
@@ -73,7 +80,7 @@
           {
             "attachment": {
               "contentType": "text/plain",
-              "data": "QWxleCBNYXJ0aW4gaGFzIGhhZCAzIG1vbnRocyBvZiBlcGlnYXN0cmljIHBhaW4sIGVhcmx5IHNhdGlldHksIGFuZCBicmVha3Rocm91Z2ggcmVmbHV4IGRlc3BpdGUgb21lcHJhem9sZS4gSGUgaGFzIGxvc3QgOCBsYnMgdW5pbnRlbnRpb25hbGx5LiBGSVQgdGVzdGluZyByZXR1cm5lZCBwb3NpdGl2ZS4gRmFtaWx5IGhpc3Rvcnkgb2YgY29sb24gY2FuY2VyIGluIGhpcyBmYXRoZXIuIFJlcXVlc3Q6IEdJIGV2YWx1YXRpb24gZm9yIGFsYXJtIHN5bXB0b21zIGFuZCBuZWVkIGZvciBlbmRvc2NvcHkuIENNUC9saXZlciBsYWJzIG5vdCB5ZXQgZHJhd24u"
+              "title": "Alex Martin has had 3 months of epigastric pain, early satiety, and breakthrough reflux despite omeprazole. He has lost 8 lbs unintentionally. FIT testing returned positive. Family history of colon cancer in his father. Request: GI evaluation for alarm symptoms and need for endoscopy. CMP/liver labs not yet drawn."
             }
           }
         ]

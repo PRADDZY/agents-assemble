@@ -70,4 +70,39 @@ describe("referral engine", () => {
     expect(documentReference?.content?.[0]?.attachment?.data).toBeTruthy();
     expect(provenance?.target?.some((target) => target.reference?.startsWith("Task/"))).toBe(true);
   });
+
+  it("falls back to deterministic outputs when the narrative generator fails", async () => {
+    const context = createPatientContext(alexBundle);
+    const failingGenerator = {
+      draftPacket: async () => {
+        throw new Error("quota exceeded");
+      },
+      draftPatientPrep: async () => {
+        throw new Error("quota exceeded");
+      },
+      draftTasks: async () => {
+        throw new Error("quota exceeded");
+      }
+    };
+
+    const packet = await draftReferralPacket({
+      specialtyId: "gastroenterology",
+      context,
+      generator: failingGenerator
+    });
+
+    expect(packet.packetTitle).toContain("Alex Martin");
+
+    const exported = await exportReferralBundle({
+      specialtyId: "gastroenterology",
+      context,
+      exportMode: "full",
+      generator: failingGenerator,
+      generatedAt: "2026-05-06T00:00:00.000Z"
+    });
+
+    expect(exported.bundle.resourceType).toBe("Bundle");
+    expect(exported.artifactCounts.documentReferenceCount).toBe(1);
+    expect(exported.artifactCounts.taskCount).toBeGreaterThan(0);
+  });
 });
