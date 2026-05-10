@@ -49,7 +49,7 @@ Use this list as the final gate before you record the demo video or open the Dev
 
 - Set `VITE_MARKETPLACE_URL` to the MCP Marketplace link and redeploy the proof UI.
 - Set `VITE_AGENT_MARKETPLACE_URL` to the BYO agent Marketplace link before the same redeploy.
-- Leave `VITE_DEMO_VIDEO_URL` blank until the video is uploaded.
+- Set `VITE_DEMO_VIDEO_URL` to `https://youtu.be/NYVbcdDkd08` and redeploy the proof UI.
 - README still matches the deployed URLs and the Marketplace status.
 - No user-facing page still says `Marketplace Candidate`.
 
@@ -65,5 +65,4 @@ Use this list as the final gate before you record the demo video or open the Dev
 
 ## User-owned tasks
 
-- Record and upload the public video under 3 minutes.
 - Fill the Devpost form with the description, Marketplace share link, and video URL.

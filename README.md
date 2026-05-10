@@ -94,6 +94,7 @@ Remove-Item Env:MARKETPLACE_URL
 - MCP worker: `https://referral-ready-mcp.dpratik3005.workers.dev/mcp`
 - Worker health: `https://referral-ready-mcp.dpratik3005.workers.dev/health`
 - Proof UI: `https://referral-ready-proof-ui.pages.dev`
+- Demo video: `https://youtu.be/NYVbcdDkd08`
 - Prompt Opinion MCP Marketplace entry: `https://app.promptopinion.ai/marketplace/mcp/019e03f0-e8af-7305-a381-09001b3447dd`
 - Prompt Opinion BYO agent entry: `https://app.promptopinion.ai/marketplace/agent/019e0421-5978-7c30-9032-aaa2efc3ff4b`
 

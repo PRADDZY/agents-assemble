@@ -60,6 +60,6 @@
 
 1. Put the final MCP Marketplace share link into `apps/proof-ui/.env.local` as `VITE_MARKETPLACE_URL`.
 2. Put the final BYO agent share link into `apps/proof-ui/.env.local` as `VITE_AGENT_MARKETPLACE_URL`.
-3. Redeploy the proof UI with `pnpm deploy:ui`.
-4. Re-run `pnpm submissioncheck`.
-5. Only then record the video.
+3. Put the final video link into `apps/proof-ui/.env.local` as `VITE_DEMO_VIDEO_URL` (`https://youtu.be/NYVbcdDkd08`).
+4. Redeploy the proof UI with `pnpm deploy:ui`.
+5. Re-run `pnpm submissioncheck`.
